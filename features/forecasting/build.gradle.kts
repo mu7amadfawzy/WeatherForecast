@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -8,11 +8,9 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.tasks.forecasting"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        lint.targetSdk = 34
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
