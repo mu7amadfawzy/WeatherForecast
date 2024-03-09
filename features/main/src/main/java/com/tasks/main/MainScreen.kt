@@ -19,6 +19,7 @@ import com.tasks.main.navigation.NavDestination
 import com.tasks.main.navigation.WeatherNavHost
 import com.tasks.main.theme.WeatherAppTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherMainScreen() {
     WeatherAppTheme {
@@ -30,31 +31,29 @@ fun WeatherMainScreen() {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                TopBar(topBarTitle.value)
-            },
-            bottomBar = {
-                BottomNavigation(navController) {
-                    topBarTitle.value = it
-                }
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = topBarTitle.value,
+                            fontSize = 18.sp,
+                            color = colorScheme.onBackground
+                        )
+                    })
             },
             content = { padding ->
                 Box(modifier = Modifier.padding(padding)) {
                     WeatherNavHost(navController = navController)
                 }
-            }
+            },
+            bottomBar = {
+                BottomNavigation(
+                    navController = navController,
+                    destinations = listOf(
+                        NavDestination.CurrentWeather,
+                        NavDestination.Forecasting,
+                        NavDestination.Searching
+                    ), onValueChange = { topBarTitle.value = it })
+            },
         )
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar(title: String) {
-    TopAppBar(
-        title = {
-            Text(
-                text = title,
-                fontSize = 18.sp,
-                color = colorScheme.onBackground
-            )
-        })
 }
