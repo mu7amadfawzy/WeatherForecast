@@ -1,7 +1,7 @@
-/.gradle/buildOutputCleanup
 /.gradle
 /.idea
 /gradle/wrapper/gradle-wrapper.jar
 /gradlew
 /gradlew.bat
 /local.properties
+/domain/build

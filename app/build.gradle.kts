@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.gson)
 
     implementation(project(":core"))
-    implementation(project(":features:currentweather"))
+    implementation(project(":domain"))
+    implementation(project(":features:forecasting"))
     implementation(project(":features:forecasting"))
 }
