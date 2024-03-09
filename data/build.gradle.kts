@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.hilt.plugin)
 }
 
 android {
@@ -34,10 +35,14 @@ android {
 }
 
 dependencies {
+    implementation(libs.hilt)
+    annotationProcessor(libs.hilt.compiler)
+
     implementation(libs.retrofit)
     implementation(libs.moshiConverter)
     implementation(libs.gsonConverter)
     implementation(libs.okHttp)
     implementation(libs.okHttpLoggingInterceptor)
     implementation(libs.gson)
+    implementation(project(":domain"))
 }
