@@ -41,7 +41,12 @@ private fun dynamicColor(darkTheme: Boolean) =
 private val darkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
+    onPrimary = Purple40,
+    onSecondary = PurpleGrey40,
+    onTertiary = Pink40,
+    onBackground = Color(0xFF1C1B1F),
+    onSurface = Color(0xFF1C1B1F),
 )
 
 private val lightColorScheme = lightColorScheme(

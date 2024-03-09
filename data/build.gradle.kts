@@ -1,7 +1,8 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.hilt.plugin)
+    alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -36,7 +37,7 @@ android {
 
 dependencies {
     implementation(libs.hilt)
-    annotationProcessor(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 
     implementation(libs.retrofit)
     implementation(libs.moshiConverter)

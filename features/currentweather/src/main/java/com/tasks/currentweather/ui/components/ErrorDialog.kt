@@ -1,4 +1,4 @@
-package com.tasks.main.components
+package com.tasks.currentweather.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

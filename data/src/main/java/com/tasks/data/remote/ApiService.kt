@@ -8,8 +8,8 @@ interface ApiService {
     @GET("forecast.json")
     suspend fun getCurrentWeather(
         @Query("key") key: String = BaseURL.apiKey,
-        @Query("q") location: String = "London",
-        @Query("days") days: String = "1",
+        @Query("q") location: String,
+        @Query("days") days: String,
         @Query("aqi") aqi: String = "no",
         @Query("alerts") alerts: String = "no",
     ): Result<CurrentWeather>
