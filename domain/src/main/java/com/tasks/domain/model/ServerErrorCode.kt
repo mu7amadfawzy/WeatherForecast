@@ -6,6 +6,6 @@ enum class ServerErrorCode(val description: String) {
 
     companion object {
         fun parse(errorCode: String) =
-            values().find { it.name == errorCode.trim().uppercase() } ?: DEFAULT
+            entries.find { it.name == errorCode.trim().uppercase() } ?: DEFAULT
     }
 }

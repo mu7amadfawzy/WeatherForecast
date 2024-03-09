@@ -34,8 +34,8 @@ android {
 
 dependencies {
     implementation(libs.gson)
-
     implementation(libs.androidx.core.ktx)
+
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.junit)
