@@ -16,7 +16,7 @@ fun WeatherNavHost(navController: NavHostController) {
         }
 
         composable(NavDestination.Forecasting.route) {
-            ForecastScreen(navController)
+            ForecastScreen()
         }
 
         composable(NavDestination.Searching.route) {
