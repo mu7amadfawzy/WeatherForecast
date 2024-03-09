@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.0-alpha11"
+agp = "8.4.0-alpha13"
 kotlin = "1.9.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -19,6 +19,7 @@ okHttpVersion = "4.12.0"
 gsonVersion = "2.10.1"
 mockkVersion = "1.12.5"
 
+hiltPlugin = "2.44"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,4 +63,5 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gsonVersi
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+hilt-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hiltPlugin" }
 
