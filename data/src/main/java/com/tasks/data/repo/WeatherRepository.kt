@@ -3,12 +3,11 @@ package com.tasks.data.repo
 import com.tasks.data.remote.ApiService
 import com.tasks.domain.model.CurrentWeather
 import com.tasks.domain.repo.WeatherRepository
-import javax.inject.Inject
 
-class WeatherRepositoryImpl @Inject constructor(private val apiService: ApiService) :
+class WeatherRepositoryImpl(private val apiService: ApiService) :
     WeatherRepository {
 
-    override suspend fun getWeather(days: String): Result<CurrentWeather> =
-        apiService.getCurrentWeather()
+    override suspend fun getWeather(location: String, days: String): Result<CurrentWeather> =
+        apiService.getCurrentWeather(days = days, location = location)
 
 }
