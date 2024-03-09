@@ -22,18 +22,19 @@ class WeatherViewModel @Inject constructor(private val currentWeatherUseCase: Ge
     private val _state = MutableStateFlow<Resource<Any>?>(null)
     val state: StateFlow<Resource<Any>?> = _state
 
-    fun getCurrentWeather() = viewModelScope.launch {
-        _state.value = Resource.Loading()
+    fun getCurrentWeather(location: String = "Cairo", days: String = "1") =
+        viewModelScope.launch {
+            _state.value = Resource.Loading()
 
-        currentWeatherUseCase().fold(
-            onSuccess = {
-                _state.value = Resource.Success(it)
-            },
-            onFailure = {
-                _state.value = Resource.Error("Unknown Error", it)
-            }
-        )
-    }
+            currentWeatherUseCase(location, days).fold(
+                onSuccess = {
+                    _state.value = Resource.Success(it)
+                },
+                onFailure = {
+                    _state.value = Resource.Error("Unknown Error", it)
+                }
+            )
+        }
 
     fun parseDateToTime(time: String): String {
         val inputSDF = SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault())
