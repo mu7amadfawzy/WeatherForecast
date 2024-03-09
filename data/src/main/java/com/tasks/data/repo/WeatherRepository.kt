@@ -8,6 +8,6 @@ class WeatherRepositoryImpl(private val apiService: ApiService) :
     WeatherRepository {
 
     override suspend fun getWeather(location: String, days: String): Result<CurrentWeather> =
-        apiService.getCurrentWeather(days = days, location = location)
+        apiService.getCurrentWeather(location = location, days = days)
 
 }
