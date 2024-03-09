@@ -68,15 +68,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.retrofit)
-    implementation(libs.moshiConverter)
-    implementation(libs.gsonConverter)
-    implementation(libs.okHttp)
-    implementation(libs.okHttpLoggingInterceptor)
-    implementation(libs.gson)
 
     implementation(project(":core"))
     implementation(project(":domain"))
-    implementation(project(":features:forecasting"))
-    implementation(project(":features:forecasting"))
+    implementation(project(":features:main"))
 }
