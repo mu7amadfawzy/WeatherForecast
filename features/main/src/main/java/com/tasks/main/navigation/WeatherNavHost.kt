@@ -6,22 +6,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tasks.currentweather.ui.WeatherScreen
 import com.tasks.forecasting.ForecastScreen
-import com.tasks.searching.SearchCityScreen
 
 @Composable
-fun WeatherNavHost(navController: NavHostController) {
+fun WeatherNavHost(navController: NavHostController, citySearch: String) {
     NavHost(navController = navController, startDestination = NavDestination.CurrentWeather.route) {
         composable(NavDestination.CurrentWeather.route) {
-            WeatherScreen()
+            WeatherScreen(citySearch)
         }
 
         composable(NavDestination.Forecasting.route) {
-            ForecastScreen()
+            ForecastScreen(city = citySearch)
         }
-
-        composable(NavDestination.Searching.route) {
-            SearchCityScreen(navController)
-        }
-
     }
 }

@@ -8,10 +8,6 @@ sealed class NavDestination(val route: String, val icon: Int, val title: String)
 
     data object Forecasting :
         NavDestination(Routes.FORECAST, R.drawable.weather_forecasting, "Forecasting")
-
-    data object Searching :
-        NavDestination(Routes.SEARCH, R.drawable.baseline_search, "Search City")
-
 }
 
 object Routes {

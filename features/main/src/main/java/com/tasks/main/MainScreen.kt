@@ -3,46 +3,41 @@ package com.tasks.main
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.tasks.main.components.BottomNavigation
 import com.tasks.main.navigation.NavDestination
 import com.tasks.main.navigation.WeatherNavHost
 import com.tasks.main.theme.WeatherAppTheme
+import com.tasks.searching.ui.WeatherTopAppBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherMainScreen() {
     WeatherAppTheme {
         val navController = rememberNavController()
-        val topBarTitle = remember {
+        var topBarTitle by remember {
             mutableStateOf(NavDestination.CurrentWeather.title)
         }
-
+        var citySearch by remember {
+            mutableStateOf("Cairo")
+        }
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = topBarTitle.value,
-                            fontSize = 18.sp,
-                            color = colorScheme.onBackground
-                        )
-                    })
+                WeatherTopAppBar(
+                    title = topBarTitle,
+                    onSearchClicked = { citySearch = it },
+                )
             },
             content = { padding ->
                 Box(modifier = Modifier.padding(padding)) {
-                    WeatherNavHost(navController = navController)
+                    WeatherNavHost(navController = navController, citySearch = citySearch)
                 }
             },
             bottomBar = {
@@ -50,9 +45,8 @@ fun WeatherMainScreen() {
                     navController = navController,
                     destinations = listOf(
                         NavDestination.CurrentWeather,
-                        NavDestination.Forecasting,
-                        NavDestination.Searching
-                    ), onValueChange = { topBarTitle.value = it })
+                        NavDestination.Forecasting
+                    ), onValueChange = { topBarTitle = it })
             },
         )
     }

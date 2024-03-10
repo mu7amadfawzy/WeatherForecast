@@ -13,30 +13,32 @@ import org.junit.Test
 
 class GetWeatherUseCaseTest {
     @Test
-    fun `invoke() with valid data should return success()`() = runBlocking {
-        // Given
-        val repo = getSuccessRepo()
-        val useCase = GetWeatherUseCase(repo)
+    fun `invoke() with success result should return value`() =
+        runBlocking {
+            // Given
+            val days = 2
+            val repo = getSuccessRepo()
+            val useCase = GetWeatherUseCase(repo)
 
-        // When
-        val result = useCase()
+            // When
+            val result = useCase(days.toString(), days.toString())
 
-        // Then
-        assert(result.isSuccess)
-    }
+            // Then
+            assert(result.isSuccess)
+        }
 
     @Test
     fun `invoke() with custom days should return success() with matched Forecast days`() =
         runBlocking {
-        // Given
+            // Given
             val days = 2
             val repo = getSuccessRepo()
-        val useCase = GetWeatherUseCase(repo)
+            val useCase = GetWeatherUseCase(repo)
 
-        // When
-            val result = useCase(days.toString())
+            // When
+            val result = useCase(days.toString(), days.toString())
 
-        // Then
+            // Then
             assert(result.isSuccess)
             assert(result.getOrNull()?.forecast?.forecastday?.size == days)
         }
@@ -48,25 +50,26 @@ class GetWeatherUseCaseTest {
         val useCase = GetWeatherUseCase(repo)
 
         // When
-        val result = useCase()
+        val result = useCase("", "")
 
         // Then
         assert(result.isFailure)
     }
 
     private fun getFailureRepo() = object : WeatherRepository {
-        override suspend fun getWeather(days: String): Result<CurrentWeather> {
+        override suspend fun getWeather(location: String, days: String): Result<CurrentWeather> {
             return Result.failure(Throwable())
         }
     }
+
     private fun getSuccessRepo() = object : WeatherRepository {
-        override suspend fun getWeather(days: String): Result<CurrentWeather> {
-            val list = mutableListOf<Forecastday>()
+        override suspend fun getWeather(location: String, days: String): Result<CurrentWeather> {
+            val forecastDays = mutableListOf<Forecastday>()
             repeat(days.toInt()) {
-                list.add(getForeCastDay())
+                forecastDays.add(getForeCastDay())
             }
             return Result.success(
-                CurrentWeather(forecast = Forecast(list))
+                CurrentWeather(forecast = Forecast(forecastDays))
             )
         }
     }

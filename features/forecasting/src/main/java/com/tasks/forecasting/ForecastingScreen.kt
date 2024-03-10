@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.tasks.currentweather.R
+import com.tasks.currentweather.ui.CityTitle
 import com.tasks.currentweather.ui.components.ErrorDialog
 import com.tasks.currentweather.ui.components.LoadingBubblesScreen
 import com.tasks.currentweather.viewmodel.WeatherViewModel
@@ -45,14 +46,16 @@ import com.tasks.domain.model.CurrentWeather
 import com.tasks.domain.model.Day
 
 @Composable
-fun ForecastScreen(viewModel: WeatherViewModel = hiltViewModel()) {
-
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getCurrentWeather(days = "10")
+fun ForecastScreen(
+    city: String,
+    viewModel: WeatherViewModel = hiltViewModel()
+) {
+    val days = "3"
+    LaunchedEffect(city) {
+        viewModel.getCurrentWeather(city = city, days = days)
     }
 
     val state by viewModel.state.collectAsState()
-
     var forecastedWeatherState by remember {
         mutableStateOf(CurrentWeather())
     }
@@ -63,7 +66,7 @@ fun ForecastScreen(viewModel: WeatherViewModel = hiltViewModel()) {
 
         is Resource.Error ->
             ErrorDialog(message = pageState.message) {
-                viewModel.getCurrentWeather(days = "10")
+                viewModel.getCurrentWeather(city, days)
             }
 
         is Resource.Success ->
@@ -72,11 +75,14 @@ fun ForecastScreen(viewModel: WeatherViewModel = hiltViewModel()) {
         null -> Unit
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Top
+        ) {
+            item {
+                CityTitle(city)
+            }
             forecastedWeatherState.forecast?.forecastday?.let {
                 items(items = it) { forecastDay ->
                     DaysItem(
@@ -95,7 +101,7 @@ fun ForecastScreen(viewModel: WeatherViewModel = hiltViewModel()) {
 fun DaysItem(
     date: String,
     days: Day,
-    parseDateToTime: (time: String) -> String
+    parseDateToTime: (time: String) -> String?
 ) {
     Card(
         modifier = Modifier
@@ -108,10 +114,12 @@ fun DaysItem(
                 .padding(16.dp)
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = parseDateToTime(date),
-                    style = TextStyle(fontSize = 16.sp, color = colorScheme.onBackground)
-                )
+                parseDateToTime(date)?.let {
+                    Text(
+                        text = it,
+                        style = TextStyle(fontSize = 16.sp, color = colorScheme.onBackground)
+                    )
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = days.condition.text,

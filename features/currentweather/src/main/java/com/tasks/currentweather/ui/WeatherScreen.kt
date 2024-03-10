@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,9 +52,12 @@ import com.tasks.domain.model.CurrentWeather
 import com.tasks.domain.model.Hour
 
 @Composable
-fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
-    LaunchedEffect(Unit) {
-        viewModel.getCurrentWeather()
+fun WeatherScreen(
+    citySearch: String,
+    viewModel: WeatherViewModel = hiltViewModel()
+) {
+    LaunchedEffect(citySearch) {
+        viewModel.getCurrentWeather(citySearch)
     }
     val state by viewModel.state.collectAsState()
 
@@ -67,17 +72,17 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
             currentWeatherSate = pageState.data as CurrentWeather
 
         is Resource.Error, null -> ErrorDialog(message = pageState?.message) {
-            viewModel.getCurrentWeather()
+            viewModel.getCurrentWeather(citySearch)
         }
     }
-
-    WeatherContent(currentWeatherSate, viewModel::parseDateToTime)
+    WeatherContent(citySearch, currentWeatherSate, viewModel::parseDateToTime)
 }
 
 @Composable
 private fun WeatherContent(
+    citySearch: String?,
     currentWeatherSate: CurrentWeather,
-    parseDateToTime: (time: String) -> String
+    parseDateToTime: (time: String) -> String?
 ) {
     Box(
         modifier = Modifier
@@ -88,6 +93,7 @@ private fun WeatherContent(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
+            CityTitle(citySearch)
             Spacer(modifier = Modifier.height(16.dp))
             HeaderWeather(currentWeatherSate.current)
             currentWeatherSate.forecast?.forecastday?.get(0)?.hour?.let {
@@ -95,6 +101,20 @@ private fun WeatherContent(
             }
 
         }
+    }
+}
+
+@Composable
+fun CityTitle(citySearch: String?) {
+    citySearch?.let {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            text = it,
+            textAlign = TextAlign.Center,
+            style = TextStyle(fontSize = 28.sp, color = colorScheme.primary)
+        )
     }
 }
 
@@ -205,11 +225,10 @@ fun WeatherLabelAndValue(
 @Composable
 fun HourlyForecasting(
     hours: List<Hour>,
-    parseDateToTime: (time: String) -> String
+    parseDateToTime: (time: String) -> String?
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Spacer(modifier = Modifier.height(48.dp))
-
         Text(
             text = "Hourly Status",
             style = TextStyle(fontSize = 16.sp, color = colorScheme.onBackground)
@@ -218,7 +237,7 @@ fun HourlyForecasting(
         LazyRow {
             items(hours, itemContent = {
                 HourItem(
-                    time = parseDateToTime(it.time),
+                    time = parseDateToTime(it.time) ?: "",
                     icon = "https:${it.condition.icon}",
                     temp = it.tempC.toString()
                 )
