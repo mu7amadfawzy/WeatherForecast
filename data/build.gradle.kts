@@ -45,5 +45,8 @@ dependencies {
     implementation(libs.okHttp)
     implementation(libs.okHttpLoggingInterceptor)
     implementation(libs.gson)
+
+    implementation(libs.datastore)
+
     implementation(project(":domain"))
 }
