@@ -15,6 +15,9 @@ android {
 
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OPEN_WEATHER_URL", "\"https://api.weatherapi.com/v1/\"")
+        buildConfigField("String", "OPEN_WEATHER_KEY", "\"afcbed05dd0e4635b76103355230804\"")
     }
 
     buildTypes {
@@ -33,6 +36,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -49,4 +55,5 @@ dependencies {
     implementation(libs.datastore)
 
     implementation(project(":domain"))
+    implementation(project(":core"))
 }

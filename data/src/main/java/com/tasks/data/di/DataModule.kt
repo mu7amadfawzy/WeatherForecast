@@ -1,10 +1,10 @@
 package com.tasks.data.di
 
 import com.google.gson.GsonBuilder
+import com.tasks.core.network.BaseHeadersInterceptor
+import com.tasks.data.BuildConfig
 import com.tasks.data.remote.ApiService
-import com.tasks.data.remote.BaseHeadersInterceptor
-import com.tasks.data.remote.BaseURL
-import com.tasks.data.remote.ResultCallAdapterFactory
+import com.tasks.data.remote.adapter.ResultCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,7 +45,7 @@ object DataModule {
         okHttpClient: OkHttpClient
     ): ApiService {
         return Retrofit.Builder()
-            .baseUrl(BaseURL.URL)
+            .baseUrl(BuildConfig.OPEN_WEATHER_URL)
             .addConverterFactory(gsonConverterFactory)
             .addCallAdapterFactory(ResultCallAdapterFactory())
             .client(okHttpClient)

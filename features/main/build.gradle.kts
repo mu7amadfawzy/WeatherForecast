@@ -39,6 +39,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":features:currentweather"))
+    implementation(project(":features:forecasting"))
+    implementation(project(":features:searching"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
@@ -51,17 +55,5 @@ dependencies {
     implementation(libs.navigation)
     implementation(libs.hilt.navigation)
 
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
-
-    implementation(project(":features:currentweather"))
-    implementation(project(":features:forecasting"))
-    implementation(project(":features:searching"))
 }
