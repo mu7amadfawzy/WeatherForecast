@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -54,6 +56,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.navigation)
     implementation(libs.hilt.navigation)
+
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
 
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
