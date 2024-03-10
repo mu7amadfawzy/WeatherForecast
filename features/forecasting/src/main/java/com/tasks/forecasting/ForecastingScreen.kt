@@ -50,12 +50,12 @@ fun ForecastScreen(
     city: String,
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
+    val days = "3"
     LaunchedEffect(city) {
-        viewModel.getCurrentWeather(city = city, days = "10")
+        viewModel.getCurrentWeather(city = city, days = days)
     }
 
     val state by viewModel.state.collectAsState()
-
     var forecastedWeatherState by remember {
         mutableStateOf(CurrentWeather())
     }
@@ -66,7 +66,7 @@ fun ForecastScreen(
 
         is Resource.Error ->
             ErrorDialog(message = pageState.message) {
-                viewModel.getCurrentWeather(city, "10")
+                viewModel.getCurrentWeather(city, days)
             }
 
         is Resource.Success ->
