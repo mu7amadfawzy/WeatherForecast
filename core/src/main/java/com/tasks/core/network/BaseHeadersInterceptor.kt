@@ -1,4 +1,4 @@
-package com.tasks.data.remote
+package com.tasks.core.network
 
 import okhttp3.Interceptor
 import okhttp3.Response

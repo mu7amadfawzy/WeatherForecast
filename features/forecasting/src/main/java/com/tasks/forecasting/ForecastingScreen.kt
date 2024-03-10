@@ -36,12 +36,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.tasks.core.network.Resource
 import com.tasks.currentweather.R
 import com.tasks.currentweather.ui.CityTitle
 import com.tasks.currentweather.ui.components.ErrorDialog
 import com.tasks.currentweather.ui.components.LoadingBubblesScreen
 import com.tasks.currentweather.viewmodel.WeatherViewModel
-import com.tasks.data.remote.Resource
 import com.tasks.domain.model.CurrentWeather
 import com.tasks.domain.model.Day
 

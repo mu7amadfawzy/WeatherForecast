@@ -1,5 +1,6 @@
-package com.tasks.currentweather.viewmodel
+package com.tasks.currentweather
 
+import com.tasks.currentweather.viewmodel.WeatherViewModel
 import com.tasks.domain.model.CurrentWeather
 import com.tasks.domain.repo.WeatherRepository
 import com.tasks.domain.usecase.GetWeatherUseCase
