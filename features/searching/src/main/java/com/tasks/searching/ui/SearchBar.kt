@@ -18,7 +18,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -27,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tasks.searching.intent.SearchIntent.NewSearchValue
+import com.tasks.searching.intent.SearchIntent.ClickSearch
 import com.tasks.searching.intent.SearchIntent.ToggleSearchState
 import com.tasks.searching.intent.SearchWidgetState
 import com.tasks.searching.viewmodel.SearchBarViewModel
@@ -39,26 +43,31 @@ fun WeatherTopAppBar(
 ) {
     val viewModel: SearchBarViewModel = hiltViewModel()
     val searchWidgetState by viewModel.searchWidgetState
-    val searchTextState by viewModel.searchTextState
+    val newCitySearch by viewModel.onNewCity
+
+
+    LaunchedEffect(newCitySearch) {
+        newCitySearch?.let {
+            onSearchClicked(it)
+        }
+    }
 
     when (searchWidgetState) {
-        SearchWidgetState.CLOSED -> {
+        SearchWidgetState.CLOSED ->
             DefaultAppBar(
                 title = title,
                 onSearchClicked = {
                     viewModel.onNewIntent(ToggleSearchState)
                 }
             )
-        }
 
-        SearchWidgetState.OPENED -> {
+        SearchWidgetState.OPENED ->
             SearchAppBar(
-                text = searchTextState,
-                onTextChange = { viewModel.onNewIntent(NewSearchValue(it)) },
                 onCloseClicked = { viewModel.onNewIntent(ToggleSearchState) },
-                onSearchClicked = onSearchClicked
+                onSearchClicked = {
+                    viewModel.onNewIntent(ClickSearch(it))
+                }
             )
-        }
     }
 }
 
@@ -94,8 +103,6 @@ fun DefaultAppBar(
 
 @Composable
 fun SearchAppBar(
-    text: String,
-    onTextChange: (String) -> Unit,
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit,
 ) {
@@ -106,10 +113,11 @@ fun SearchAppBar(
             .height(64.dp),
         color = colorScheme.primary,
     ) {
+        var searchTextState by remember { mutableStateOf("") }
         TextField(
             modifier = Modifier.fillMaxWidth(),
-            value = text,
-            onValueChange = { onTextChange(it) },
+            value = searchTextState,
+            onValueChange = { searchTextState = it },
             placeholder = {
                 Text(
                     modifier = Modifier.alpha(0.5f),
@@ -134,11 +142,10 @@ fun SearchAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        if (text.isNotEmpty()) {
-                            onTextChange("")
-                        } else {
+                        if (searchTextState.isNotEmpty())
+                            searchTextState = ""
+                        else
                             onCloseClicked()
-                        }
                     }
                 ) {
                     Icon(
@@ -152,7 +159,7 @@ fun SearchAppBar(
             ),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    onSearchClicked(text)
+                    onSearchClicked(searchTextState)
                     keyboardController?.hide()
                 },
             ),
