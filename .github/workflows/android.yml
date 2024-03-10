@@ -41,5 +41,3 @@ jobs:
       with:
         name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - APK(s) debug generated
         path: ${{ env.main_project_module }}/build/outputs/apk/debug/
-
-
