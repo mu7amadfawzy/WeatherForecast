@@ -1,4 +1,4 @@
-package com.tasks.main.theme
+package com.tasks.main.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

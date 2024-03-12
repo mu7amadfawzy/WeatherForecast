@@ -44,15 +44,23 @@ import com.tasks.currentweather.ui.components.LoadingBubblesScreen
 import com.tasks.currentweather.viewmodel.WeatherViewModel
 import com.tasks.domain.model.CurrentWeather
 import com.tasks.domain.model.Day
+import kotlin.reflect.KFunction1
 
 @Composable
 fun ForecastScreen(
-    city: String,
+    city: String?,
+    days: String = "3",
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
-    val days = "3"
+    val getForecast: () -> Unit = {
+        city?.let {
+            viewModel.getCurrentWeather(it, days)
+        }
+    }
     LaunchedEffect(city) {
-        viewModel.getCurrentWeather(city = city, days = days)
+        city?.let {
+            getForecast()
+        }
     }
 
     val state by viewModel.state.collectAsState()
@@ -65,9 +73,7 @@ fun ForecastScreen(
             LoadingBubblesScreen()
 
         is Resource.Error ->
-            ErrorDialog(message = pageState.message) {
-                viewModel.getCurrentWeather(city, days)
-            }
+            ErrorDialog(message = pageState.message, getForecast)
 
         is Resource.Success ->
             forecastedWeatherState = pageState.data as CurrentWeather
@@ -75,6 +81,15 @@ fun ForecastScreen(
         null -> Unit
     }
 
+    Forecasts(city, forecastedWeatherState, viewModel::parseDateToTime)
+}
+
+@Composable
+private fun Forecasts(
+    city: String?,
+    forecastedWeatherState: CurrentWeather,
+    parseDateToTime: KFunction1<String, String?>
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -88,7 +103,7 @@ fun ForecastScreen(
                     DaysItem(
                         date = forecastDay.date,
                         days = forecastDay.day,
-                        parseDateToTime = viewModel::parseDateToTime
+                        parseDateToTime = parseDateToTime
                     )
                 }
             }

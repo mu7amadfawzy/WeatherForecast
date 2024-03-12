@@ -1,4 +1,4 @@
-package com.tasks.main.components
+package com.tasks.main.ui
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.tasks.main.navigation.NavDestination
-import com.tasks.main.theme.Teal
+import com.tasks.main.ui.theme.Teal
 
 @Composable
 fun BottomNavigation(

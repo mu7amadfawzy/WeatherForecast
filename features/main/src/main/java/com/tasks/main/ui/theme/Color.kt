@@ -1,4 +1,4 @@
-package com.tasks.main.theme
+package com.tasks.main.ui.theme
 
 import android.os.Build
 import androidx.annotation.RequiresApi

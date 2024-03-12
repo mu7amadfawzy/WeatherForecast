@@ -13,5 +13,4 @@ sealed class NavDestination(val route: String, val icon: Int, val title: String)
 object Routes {
     const val WEATHER = "weather"
     const val FORECAST = "forecasting"
-    const val SEARCH = "searching"
 }

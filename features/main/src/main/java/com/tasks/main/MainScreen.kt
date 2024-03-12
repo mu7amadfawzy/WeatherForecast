@@ -11,10 +11,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.tasks.main.components.BottomNavigation
 import com.tasks.main.navigation.NavDestination
 import com.tasks.main.navigation.WeatherNavHost
-import com.tasks.main.theme.WeatherAppTheme
+import com.tasks.main.ui.BottomNavigation
+import com.tasks.main.ui.theme.WeatherAppTheme
 import com.tasks.searching.ui.WeatherTopAppBar
 
 @Composable
@@ -25,7 +25,7 @@ fun WeatherMainScreen() {
             mutableStateOf(NavDestination.CurrentWeather.title)
         }
         var citySearch by remember {
-            mutableStateOf("Cairo")
+            mutableStateOf<String?>(null)
         }
         Scaffold(
             modifier = Modifier.fillMaxSize(),

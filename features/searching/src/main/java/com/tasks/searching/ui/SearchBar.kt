@@ -45,7 +45,6 @@ fun WeatherTopAppBar(
     val searchWidgetState by viewModel.searchWidgetState
     val newCitySearch by viewModel.onNewCity
 
-
     LaunchedEffect(newCitySearch) {
         newCitySearch?.let {
             onSearchClicked(it)
