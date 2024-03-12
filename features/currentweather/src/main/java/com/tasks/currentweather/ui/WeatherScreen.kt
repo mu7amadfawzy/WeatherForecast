@@ -53,16 +53,21 @@ import com.tasks.domain.model.Hour
 
 @Composable
 fun WeatherScreen(
-    citySearch: String,
+    citySearch: String?,
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
+    val getWeather: () -> Unit = {
+        citySearch?.let {
+            viewModel.getCurrentWeather(it)
+        }
+    }
     LaunchedEffect(citySearch) {
-        viewModel.getCurrentWeather(citySearch)
+        getWeather()
     }
     val state by viewModel.state.collectAsState()
 
     var currentWeatherSate by remember {
-        mutableStateOf(CurrentWeather())
+        mutableStateOf<CurrentWeather?>(null)
     }
 
     when (val pageState = state) {
@@ -71,11 +76,13 @@ fun WeatherScreen(
         is Resource.Success ->
             currentWeatherSate = pageState.data as CurrentWeather
 
-        is Resource.Error, null -> ErrorDialog(message = pageState?.message) {
-            viewModel.getCurrentWeather(citySearch)
-        }
+        is Resource.Error -> ErrorDialog(message = pageState.message, getWeather)
+
+        null -> Unit
     }
-    WeatherContent(citySearch, currentWeatherSate, viewModel::parseDateToTime)
+    currentWeatherSate?.let {
+        WeatherContent(citySearch, it, viewModel::parseDateToTime)
+    }
 }
 
 @Composable

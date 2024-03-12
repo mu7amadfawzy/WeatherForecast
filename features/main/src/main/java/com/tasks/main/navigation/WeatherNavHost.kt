@@ -8,7 +8,7 @@ import com.tasks.currentweather.ui.WeatherScreen
 import com.tasks.forecasting.ForecastScreen
 
 @Composable
-fun WeatherNavHost(navController: NavHostController, citySearch: String) {
+fun WeatherNavHost(navController: NavHostController, citySearch: String?) {
     NavHost(navController = navController, startDestination = NavDestination.CurrentWeather.route) {
         composable(NavDestination.CurrentWeather.route) {
             WeatherScreen(citySearch)
