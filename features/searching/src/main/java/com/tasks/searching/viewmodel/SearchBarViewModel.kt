@@ -29,7 +29,7 @@ class SearchBarViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            storeUseCase.read(SEARCH_INPUT) ?: DEFAULT_CITY.let {
+            (storeUseCase.read(CITY) ?: DEFAULT_CITY).let {
                 _onNewCity.value = it
             }
         }
@@ -55,7 +55,7 @@ class SearchBarViewModel @Inject constructor(
         if (input.isEmpty()) return
         _onNewCity.value = input
         viewModelScope.launch {
-            storeUseCase.save(SEARCH_INPUT, input)
+            storeUseCase.save(CITY, input)
         }
     }
 
@@ -64,7 +64,7 @@ class SearchBarViewModel @Inject constructor(
     }
 }
 
-private const val SEARCH_INPUT = "NewCity"
+private const val CITY = "NewCity"
 private const val DEFAULT_CITY = "Cairo"
 
 
